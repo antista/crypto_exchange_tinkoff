@@ -1,0 +1,40 @@
+<h1>Exchange</h1>
+
+<h3>Your current account: </h3> <p>{{user.current_account}}</p>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<table width="50%" border="6" cellpadding="20">
+    <thead>
+    <tr align="center" valign="center">
+        <th>Currency</th>
+        <th>Buy</th>
+        <th>Sell</th>
+        <th>Have</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for currency in currencies %}
+    <tr align="left" valign="center">
+        <td>{{ currency.name }}</td>
+        <td>{{ currencies.filter_by(name=currency.name).first().buy }}</td>
+        <td>{{ currencies.filter_by(name=currency.name).first().sell }}</td>
+        <td>{{ currency_storage.filter_by(currency_name = currency.name).first().count}}</td>
+        <td><a href="./{{user.username}}/buy/{{ currency.name }}"> buy </a></td>
+        <td><a href="./{{user.username}}/sell/{{ currency.name }}"> sell </a></td>
+    </tr>
+    </tbody>
+    {% endfor %}
+</table>
+
+
