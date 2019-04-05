@@ -27,8 +27,8 @@
     {% for currency in currencies %}
     <tr align="left" valign="center">
         <td>{{ currency.name }}</td>
-        <td>{{ currencies.filter_by(name=currency.name).first().buy }}</td>
-        <td>{{ currencies.filter_by(name=currency.name).first().sell }}</td>
+        <td>{{ currencies.get(currency.name).buy }}</td>
+        <td>{{ currencies.get(currency.name).sell }}</td>
         <td>{{ currency_storage.filter_by(currency_name = currency.name).first().count}}</td>
         <td><a href="./{{user.username}}/buy/{{ currency.name }}"> buy </a></td>
         <td><a href="./{{user.username}}/sell/{{ currency.name }}"> sell </a></td>
