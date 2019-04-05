@@ -1,11 +1,12 @@
 from exchange.currencies import CURRENCIES
 from exchange.wsgi import db
+from uuid import uuid4
 
 
 class Currency(db.Model):
     name = db.Column(db.String(80), primary_key=True, nullable=False)
-    buy = db.Column(db.Integer, primary_key=True)
-    sell = db.Column(db.Integer, primary_key=True)
+    buy = db.Column(db.Integer)
+    sell = db.Column(db.Integer)
 
     @staticmethod
     def fill_base():
@@ -17,11 +18,11 @@ class Currency(db.Model):
 
     @staticmethod
     def get_currency(currency_name):
-        return Currency.query.filter_by(name=currency_name).first()
+        return Currency.query.get(currency_name)
 
 
 class CurrencyStorage(db.Model):
-    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    id = db.Column(db.String(80), primary_key=True, unique=True, nullable=False)
     username = db.Column(db.String(80), nullable=False)
     currency_name = db.Column(db.String(80), nullable=False)
     count = db.Column(db.Integer, default=0)
@@ -30,7 +31,7 @@ class CurrencyStorage(db.Model):
     def add_user(username):
         for currency_name in CURRENCIES:
             if CurrencyStorage.get_currency_container(username, currency_name) is None:
-                db.session.add(CurrencyStorage(id=hash(username + '_' + currency_name), username=username,
+                db.session.add(CurrencyStorage(id=uuid4().hex, username=username,
                                                currency_name=currency_name))
         db.session.commit()
 
@@ -62,4 +63,4 @@ class User(db.Model):
 
     @staticmethod
     def get_user(username):
-        return User.query.filter_by(username=username).first()
+        return User.query.get(username)
