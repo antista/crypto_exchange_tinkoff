@@ -1,0 +1,7 @@
+flask
+py-postgresql
+flask_sqlalchemy
+flake8
+pytest
+pytest-mock
+pytest-coverage
